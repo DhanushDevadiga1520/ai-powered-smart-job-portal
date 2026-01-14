@@ -13,7 +13,7 @@ function Home() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/jobs");
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/jobs`);
         setJobs(res.data);
       } catch (error) {
         console.log("Error fetching jobs");
@@ -29,7 +29,7 @@ function Home() {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://localhost:5000/api/jobs/recommended",
+        `${import.meta.env.VITE_API_URL}/api/jobs/recommended`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -52,7 +52,7 @@ useEffect(() => {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://localhost:5000/api/applications/my",
+        `${import.meta.env.VITE_API_URL}/api/applications/my`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -80,7 +80,7 @@ useEffect(() => {
     const token = localStorage.getItem("token");
 
     await axios.post(
-      `http://localhost:5000/api/applications/apply/${jobId}`,
+      `${import.meta.env.VITE_API_URL}/api/applications/apply/${jobId}`,
       {},
       {
         headers: {
@@ -96,7 +96,6 @@ useEffect(() => {
     alert(error.response?.data?.message || "Error applying job");
   }
 };
-
 
   return (
   <div className="min-h-screen bg-gray-100 p-4 md:p-6">

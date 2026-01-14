@@ -18,13 +18,13 @@ function Profile() {
         const token = localStorage.getItem("token");
 
         const appRes = await axios.get(
-          "http://localhost:5000/api/applications/my",
+          `${import.meta.env.VITE_API_URL}/api/applications/my`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setApplications(appRes.data);
 
         const userRes = await axios.get(
-          "http://localhost:5000/api/auth/me",
+          `${import.meta.env.VITE_API_URL}/api/auth/me`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
@@ -52,7 +52,7 @@ const updateProfile = async () => {
     const token = localStorage.getItem("token");
 
     await axios.put(
-      "http://localhost:5000/api/auth/profile",
+      `${import.meta.env.VITE_API_URL}/api/auth/profile`,
       profile,
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -74,7 +74,7 @@ const uploadPhoto = async () => {
     const token = localStorage.getItem("token");
 
     const res = await axios.post(
-      "http://localhost:5000/api/auth/upload-photo",
+      `${import.meta.env.VITE_API_URL}/api/auth/upload-photo`,
       formData,
       {
         headers: {
@@ -100,7 +100,7 @@ const uploadPhoto = async () => {
         <img
         src={
             profile.photo
-            ? `http://localhost:5000/uploads/${profile.photo}`
+            ? `${import.meta.env.VITE_API_URL}/uploads/${profile.photo}`
             : "https://via.placeholder.com/120"
           }
           alt="Profile"
@@ -215,7 +215,7 @@ const uploadPhoto = async () => {
 
         {resumeFile ? (
           <a
-            href={`http://localhost:5000/uploads/${resumeFile}`}
+            href={`${import.meta.env.VITE_API_URL}/uploads/${resumeFile}`}
             target="_blank"
             rel="noreferrer"
             className="text-blue-600 underline"

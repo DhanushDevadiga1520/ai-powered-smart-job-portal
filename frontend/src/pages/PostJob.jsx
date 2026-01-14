@@ -4,7 +4,6 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Navigate } from "react-router-dom";
 
-
 function PostJob() {
   const [title, setTitle] = useState("");
   const [company, setCompany] = useState("");
@@ -22,7 +21,7 @@ function PostJob() {
       const token = localStorage.getItem("token");
 
       await axios.post(
-        "http://localhost:5000/api/jobs/create",
+        `${import.meta.env.VITE_API_URL}/api/jobs/create`,
         {
           title,
           company,

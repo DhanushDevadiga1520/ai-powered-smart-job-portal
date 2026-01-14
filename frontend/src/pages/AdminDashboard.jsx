@@ -21,13 +21,13 @@ function AdminDashboard() {
         const token = localStorage.getItem("token");
 
         const usersRes = await axios.get(
-          "http://localhost:5000/api/auth/users",
+          `${import.meta.env.VITE_API_URL}/api/auth/users`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setUsers(usersRes.data);
 
         const jobsRes = await axios.get(
-          "http://localhost:5000/api/jobs/admin/all",
+          `${import.meta.env.VITE_API_URL}/api/jobs/admin/all`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setJobs(jobsRes.data);
@@ -47,7 +47,7 @@ function AdminDashboard() {
       const token = localStorage.getItem("token");
 
       await axios.delete(
-        `http://localhost:5000/api/auth/admin/delete/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/auth/admin/delete/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -63,7 +63,7 @@ function AdminDashboard() {
       const token = localStorage.getItem("token");
 
       await axios.delete(
-        `http://localhost:5000/api/jobs/admin/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/jobs/admin/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -78,7 +78,7 @@ function AdminDashboard() {
     const token = localStorage.getItem("token");
 
     await axios.put(
-      `http://localhost:5000/api/auth/admin/block/${id}`,
+      `${import.meta.env.VITE_API_URL}/api/auth/admin/block/${id}`,
       {},
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -97,7 +97,7 @@ const promoteUser = async (id) => {
     const token = localStorage.getItem("token");
 
     await axios.put(
-      `http://localhost:5000/api/auth/admin/promote/${id}`,
+      `${import.meta.env.VITE_API_URL}/api/auth/admin/promote/${id}`,
       {},
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -114,7 +114,7 @@ const viewProfile = async (id) => {
     const token = localStorage.getItem("token");
 
     const res = await axios.get(
-      `http://localhost:5000/api/auth/admin/user/${id}`,
+      `${import.meta.env.VITE_API_URL}/api/auth/admin/user/${id}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
 
@@ -138,7 +138,7 @@ const viewRecruiterJobs = async (id) => {
     const token = localStorage.getItem("token");
 
     const res = await axios.get(
-      `http://localhost:5000/api/jobs/admin/recruiter-jobs/${id}`,
+      `${import.meta.env.VITE_API_URL}/api/jobs/admin/recruiter-jobs/${id}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
 

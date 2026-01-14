@@ -10,7 +10,7 @@ function RecruiterDashboard() {
         const token = localStorage.getItem("token");
 
         const res = await axios.get(
-          "http://localhost:5000/api/applications/recruiter",
+          `${import.meta.env.VITE_API_URL}/api/applications/recruiter`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ function RecruiterDashboard() {
     const token = localStorage.getItem("token");
 
     await axios.put(
-      `http://localhost:5000/api/applications/status/${id}`,
+      `${import.meta.env.VITE_API_URL}/api/applications/status/${id}`,
       { status },
       {
         headers: {

@@ -7,7 +7,7 @@ const multer = require("multer");
 const path = require("path");
 
 const fs = require("fs");
-const pdfjsLib = require("pdfjs-dist/legacy/build/pdf");
+// const pdfjsLib = require("pdfjs-dist/legacy/build/pdf");
 
 const skillsList = require("../utils/skillsList");
 
@@ -29,31 +29,35 @@ const upload = multer({ storage });
 // REGISTER USER
 router.post("/register", async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;  // 👈 include role
+    const { name, email, password, role } = req.body;
+
+    console.log("REGISTER BODY:", req.body);   // 👈 add this
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = new User({
+    const user = await User.create({
       name,
       email,
       password: hashedPassword,
-      role: role || "jobseeker",   // 👈 SAVE ROLE
+      role: role || "jobseeker : recruiter",
     });
-
-    await user.save();
 
     res.status(201).json({
       message: "User registered successfully ✅",
       user,
     });
+
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    console.error("REGISTER ERROR FULL:", error);  // 👈 IMPORTANT
+    res.status(500).json({ 
+      message: "Server error", 
+      error: error.message 
+    });
   }
 });
 
@@ -170,58 +174,58 @@ router.put("/resume", protect, async (req, res) => {
   }
 });
 
-// UPLOAD RESUME (Jobseeker only)
-router.post(
-  "/upload-resume",
-  protect,
-  upload.single("resume"),
-  async (req, res) => {
-    try {
-      if (req.user.role !== "jobseeker") {
-        return res
-          .status(403)
-          .json({ message: "Only jobseekers can upload resume" });
-      }
+// // UPLOAD RESUME (Jobseeker only)
+// router.post(
+//   "/upload-resume",
+//   protect,
+//   upload.single("resume"),
+//   async (req, res) => {
+//     try {
+//       if (req.user.role !== "jobseeker") {
+//         return res
+//           .status(403)
+//           .json({ message: "Only jobseekers can upload resume" });
+//       }
 
-      const filePath = `uploads/${req.file.filename}`;
-      const data = new Uint8Array(fs.readFileSync(filePath));
+//       const filePath = `uploads/${req.file.filename}`;
+//       const data = new Uint8Array(fs.readFileSync(filePath));
 
-const pdf = await pdfjsLib.getDocument({ data }).promise;
-let text = "";
+// const pdf = await pdfjsLib.getDocument({ data }).promise;
+// let text = "";
 
-for (let i = 1; i <= pdf.numPages; i++) {
-  const page = await pdf.getPage(i);
-  const content = await page.getTextContent();
-  const strings = content.items.map(item => item.str).join(" ");
-  text += strings + " ";
-}
+// for (let i = 1; i <= pdf.numPages; i++) {
+//   const page = await pdf.getPage(i);
+//   const content = await page.getTextContent();
+//   const strings = content.items.map(item => item.str).join(" ");
+//   text += strings + " ";
+// }
 
-text = text.toLowerCase();
+// text = text.toLowerCase();
 
-      const extractedSkills = skillsList.filter(skill =>
-        text.includes(skill)
-      );
+//       const extractedSkills = skillsList.filter(skill =>
+//         text.includes(skill)
+//       );
 
-      const user = await User.findByIdAndUpdate(
-        req.user.id,
-        {
-          resumeFile: req.file.filename,
-          resumeSkills: extractedSkills,
-        },
-        { new: true }
-      );
+//       const user = await User.findByIdAndUpdate(
+//         req.user.id,
+//         {
+//           resumeFile: req.file.filename,
+//           resumeSkills: extractedSkills,
+//         },
+//         { new: true }
+//       );
 
-      res.status(200).json({
-        message: "Resume uploaded & skills extracted ✅",
-        skills: extractedSkills,
-      });
+//       res.status(200).json({
+//         message: "Resume uploaded & skills extracted ✅",
+//         skills: extractedSkills,
+//       });
 
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server error" });
-    }
-  }
-);
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).json({ message: "Server error" });
+//     }
+//   }
+// );
 
 // GET CURRENT USER
 router.get("/me", protect, async (req, res) => {
