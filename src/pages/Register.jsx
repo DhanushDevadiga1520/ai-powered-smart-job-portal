@@ -95,7 +95,7 @@ function Register() {
 
         <p className="text-center mt-6 text-gray-600">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-600 font-medium">
+          <a href="./pages/Login.jsx" className="text-blue-600 font-medium">
             Login
           </a>
         </p>
