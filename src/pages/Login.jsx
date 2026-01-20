@@ -88,7 +88,7 @@ function Login() {
 
       <p className="text-center mt-6 text-gray-600">
         Don’t have an account?{" "}
-        <a href="./pages/Register.jsx" className="text-blue-600 font-medium">
+        <a href="/register" className="text-blue-600 font-medium">
           Register
         </a>
       </p>
