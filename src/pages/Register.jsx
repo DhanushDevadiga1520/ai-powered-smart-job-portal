@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Register() {
   const [name, setName] = useState("");
@@ -95,9 +96,9 @@ function Register() {
 
         <p className="text-center mt-6 text-gray-600">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-600 font-medium">
-            Login
-          </a>
+          <Link to="/login" className="text-blue-600 font-medium">
+          Login
+          </Link>
         </p>
       </div>
     </div>
